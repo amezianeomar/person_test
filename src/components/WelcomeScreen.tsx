@@ -26,17 +26,22 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-4 sm:p-6 md:p-8 relative">
-      <LangSwitcher />
 
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col items-center p-6 sm:p-10 md:p-12 transition-all">
 
-        {/* Logos Section */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-8 w-full">
-          <img src="/OFPPT.png" alt="OFPPT Logo" className="h-16 sm:h-20 object-contain" />
-          <div className="hidden sm:block h-12 w-px bg-slate-200"></div>
-          <div className="flex items-center justify-center h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-blue-50 text-blue-800 shrink-0">
-            <Briefcase size={32} className="sm:w-10 sm:h-10" />
+        {/* Header Actions & Logos Section */}
+        <div className={`flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-8 w-full ${isRtl ? 'sm:flex-row-reverse' : ''}`}>
+          <div className={`flex items-center justify-center gap-4 sm:gap-6 ${isRtl ? 'flex-row-reverse' : ''}`}>
+            <img src="/OFPPT.png" alt="OFPPT Logo" className="h-16 sm:h-20 object-contain" />
+            <div className="hidden sm:block h-12 w-px bg-slate-200"></div>
+            <div className="flex items-center justify-center h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-blue-50 text-blue-800 shrink-0">
+              <Briefcase size={32} className="sm:w-10 sm:h-10" />
+            </div>
           </div>
+
+          <div className="hidden sm:block h-6 sm:h-12 w-px bg-slate-200"></div>
+
+          <LangSwitcher className="mt-2 sm:mt-0 sm:mx-0 mx-auto" />
         </div>
 
         <div className="text-center mb-8 w-full">
