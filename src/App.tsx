@@ -3,6 +3,7 @@ import { WelcomeScreen } from './components/WelcomeScreen';
 import { Quiz } from './components/Quiz';
 import { Results } from './components/Results';
 import { Screen, UserData } from './types';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('welcome');
@@ -23,17 +24,19 @@ function App() {
   };
 
   return (
-    <div className="antialiased min-h-screen">
-      {currentScreen === 'welcome' && (
-        <WelcomeScreen onStart={handleStart} />
-      )}
-      {currentScreen === 'quiz' && (
-        <Quiz onComplete={handleQuizComplete} />
-      )}
-      {currentScreen === 'results' && (
-        <Results data={userData} />
-      )}
-    </div>
+    <LanguageProvider>
+      <div className="antialiased min-h-screen">
+        {currentScreen === 'welcome' && (
+          <WelcomeScreen onStart={handleStart} />
+        )}
+        {currentScreen === 'quiz' && (
+          <Quiz onComplete={handleQuizComplete} />
+        )}
+        {currentScreen === 'results' && (
+          <Results data={userData} />
+        )}
+      </div>
+    </LanguageProvider>
   );
 }
 

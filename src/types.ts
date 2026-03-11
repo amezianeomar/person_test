@@ -1,11 +1,17 @@
 export interface Answer {
-  text: string;           // Texte de la réponse
+  text: {
+    fr: string;
+    ar: string;
+  };                      // Texte de la réponse / نص الجواب
   points: number;         // Points associés (0, 1 ou 2)
 }
 
 export interface Question {
   id: number;
-  question: string;       // Énoncé de la question
+  question: {
+    fr: string;
+    ar: string;
+  };                      // Énoncé de la question / نص السؤال
   answers: Answer[];      // 3 réponses possibles
 }
 

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Briefcase, AlertCircle, Clock, FileText, CheckCircle } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { LangSwitcher } from './LangSwitcher';
 
 interface WelcomeScreenProps {
   onStart: (name: string) => void;
@@ -8,19 +10,24 @@ interface WelcomeScreenProps {
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
+  const { t, language } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim().length < 2) {
-      setError('Veuillez entrer un nom valide (minimum 2 caractères)');
+      setError(t('name_error'));
       return;
     }
     setError('');
     onStart(name.trim());
   };
 
+  const isRtl = language === 'ar';
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-4 sm:p-6 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-4 sm:p-6 md:p-8 relative">
+      <LangSwitcher />
+
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col items-center p-6 sm:p-10 md:p-12 transition-all">
 
         {/* Logos Section */}
@@ -33,53 +40,54 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
         </div>
 
         <div className="text-center mb-8 w-full">
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 tracking-tight">
-            Évaluation du Comportement Professionnel
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 tracking-tight leading-normal">
+            {t('welcome_title')}
           </h1>
           <p className="text-slate-600 text-base sm:text-lg max-w-md mx-auto">
-            Testez vos soft skills et découvrez votre profil professionnel à travers des mises en situation concrètes.
+            {t('welcome_desc')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full mb-10">
           <div className="flex flex-col items-center p-4 bg-slate-50 rounded-2xl text-center">
             <Clock className="text-blue-600 mb-2" size={24} />
-            <span className="text-sm font-semibold text-slate-700">~5 Minutes</span>
-            <span className="text-xs text-slate-500">Durée estimée</span>
+            <span className="text-sm font-semibold text-slate-700">{t('duration_label')}</span>
+            <span className="text-xs text-slate-500">{t('duration_desc')}</span>
           </div>
           <div className="flex flex-col items-center p-4 bg-slate-50 rounded-2xl text-center">
             <FileText className="text-blue-600 mb-2" size={24} />
-            <span className="text-sm font-semibold text-slate-700">10 Questions</span>
-            <span className="text-xs text-slate-500">Mises en situation</span>
+            <span className="text-sm font-semibold text-slate-700">{t('questions_count_label')}</span>
+            <span className="text-xs text-slate-500">{t('questions_count_desc')}</span>
           </div>
           <div className="flex flex-col items-center p-4 bg-slate-50 rounded-2xl text-center">
             <CheckCircle className="text-blue-600 mb-2" size={24} />
-            <span className="text-sm font-semibold text-slate-700">Certificat PDF</span>
-            <span className="text-xs text-slate-500">Bilan détaillé</span>
+            <span className="text-sm font-semibold text-slate-700">{t('cert_label')}</span>
+            <span className="text-xs text-slate-500">{t('cert_desc')}</span>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="w-full max-w-md flex flex-col items-center">
           <div className="w-full mb-6">
-            <label htmlFor="name" className="block text-sm font-semibold text-slate-700 mb-2">
-              Nom et Prénom (pour le certificat)
+            <label htmlFor="name" className={`block text-sm font-semibold text-slate-700 mb-2 ${isRtl ? 'text-right' : 'text-left'}`}>
+              {t('name_label')}
             </label>
             <input
               type="text"
               id="name"
               value={name}
+              dir="auto"
               onChange={(e) => {
                 setName(e.target.value);
                 if (error) setError('');
               }}
-              placeholder="Ex: Omar Ameziane"
+              placeholder={t('name_placeholder')}
               className={`w-full px-4 sm:px-5 py-3 sm:py-4 bg-slate-50 border rounded-xl text-slate-800 focus:outline-none focus:ring-4 transition-all text-base sm:text-lg ${error
-                  ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
-                  : 'border-slate-200 focus:border-blue-500 focus:ring-blue-100'
+                ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
+                : 'border-slate-200 focus:border-blue-500 focus:ring-blue-100'
                 }`}
             />
             {error && (
-              <div className="flex items-center gap-2 mt-2 text-red-600 text-sm animate-fade-in">
+              <div className={`flex items-center gap-2 mt-2 text-red-600 text-sm animate-fade-in ${isRtl ? 'justify-start flex-row-reverse' : ''}`}>
                 <AlertCircle size={16} />
                 <span>{error}</span>
               </div>
@@ -90,7 +98,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
             type="submit"
             className="w-full py-4 px-8 bg-blue-800 hover:bg-blue-700 text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
           >
-            Commencer l'évaluation
+            {t('start_btn')}
           </button>
         </form>
       </div>
